@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const morgan = require('morgan');
 
 // Routes
 const planetsRouter = require('./routes/planets/planets.router');
@@ -21,6 +22,7 @@ const corsOptions = {
 
 // Middlewares
 app.use(cors(corsOptions));
+app.use(morgan('combined'));
 app.use(express.json());
 
 // Serving our front end react app from the server.
