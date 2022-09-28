@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const cors = require('cors');
 
 // Routes
@@ -22,7 +23,18 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Serving our front end react app from the server.
+// This build folder is only avaliable after running our deploy script in our root package.json
+app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
+
 // Router
 app.use(planetsRouter);
+
+// Serving our front end on the / path
+app.get('/', (req, res) => {
+  res.sendFile(
+    path.join(__dirname, '..', '..', 'client', 'build', 'index.html')
+  );
+});
 
 module.exports = app;

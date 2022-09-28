@@ -10,6 +10,7 @@
     "server": "npm run dev --prefix server",
     "client": "npm run start --prefix client",
     "watch": "concurrently -c \"bgBlue.bold,bgMagenta.bold\" \"npm run client -c\" \"npm run server\"",
+    "deploy": "npm run build --prefix client && npm run start --prefix server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
