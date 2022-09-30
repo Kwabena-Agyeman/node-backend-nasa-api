@@ -35,7 +35,7 @@ app.use(planetsRouter);
 app.use(launchesRouter);
 
 // Serving our front end on the / path
-app.get('/', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(
     path.join(__dirname, '..', '..', 'client', 'build', 'index.html')
   );
