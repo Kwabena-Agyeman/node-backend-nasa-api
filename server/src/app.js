@@ -31,8 +31,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 
 // Router
-app.use(planetsRouter);
-app.use(launchesRouter);
+app.use('/planets', planetsRouter);
+app.use('/launches', launchesRouter);
 
 // Serving our front end on the / path
 app.get('/*', (req, res) => {
