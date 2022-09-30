@@ -5,6 +5,7 @@ const morgan = require('morgan');
 
 // Routes
 const planetsRouter = require('./routes/planets/planets.router');
+const launchesRouter = require('./routes/launches/launches.router');
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 
 // Router
 app.use(planetsRouter);
+app.use(launchesRouter);
 
 // Serving our front end on the / path
 app.get('/', (req, res) => {
