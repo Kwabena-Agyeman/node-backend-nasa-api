@@ -10,7 +10,7 @@ const launchesRouter = require('./routes/launches/launches.router');
 const app = express();
 
 // CORS OPTIONS
-const whiteList = ['http://localhost:3000'];
+const whiteList = ['http://localhost:3000', 'http://localhost:8000'];
 const corsOptions = {
   origin: function (origin, callback) {
     if (whiteList.indexOf(origin) !== -1 || !origin) {
