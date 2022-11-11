@@ -73,7 +73,7 @@ async function scheduleNewLaunch(launch) {
 }
 
 async function abortLaunchById(launchId) {
-  return await launchesModel.updateOne(
+  const aborted = await launchesModel.updateOne(
     {
       flightNumber: launchId,
     },
@@ -83,10 +83,8 @@ async function abortLaunchById(launchId) {
     }
   );
 
-  // const aborted = launches.get(launchId);
-  // aborted.upcoming = false;
-  // aborted.success = false;
-  // return aborted;
+  // Check if the operation acknowledged completion and the modified count = 1
+  return aborted.acknowledged === true && aborted.modifiedCount === 1;
 }
 
 module.exports = {
