@@ -3,8 +3,6 @@ const planetsModel = require('./planets.mongo');
 
 const DEFAULT_FLIGHT_NUMBER = 100;
 
-const launches = new Map();
-
 const launch = {
   flightNumber: 100,
   mission: 'Kepler mission 1',
@@ -18,8 +16,8 @@ const launch = {
 
 saveLaunch(launch);
 
-function existsLaunchesWithId(launchId) {
-  return launches.has(launchId);
+async function existsLaunchesWithId(launchId) {
+  return await launchesModel.findOne({ flightNumber: launchId });
 }
 
 async function getLatestFlightNumber() {
@@ -45,36 +43,50 @@ async function saveLaunch(launch) {
     throw new Error('No matching planet was found');
   }
 
-  await launchesModel.updateOne(
+  const savedPlanet = await launchesModel.findOneAndUpdate(
     {
       flightNumber: launch.flightNumber,
     },
     launch,
     {
       upsert: true,
+      new: true,
     }
   );
+
+  return savedPlanet;
 }
 
 async function scheduleNewLaunch(launch) {
   const newFlightNumber = (await getLatestFlightNumber()) + 1;
 
   const newLaunch = {
-    customer: ['ZTM', 'NASA'],
+    customers: ['ZTM', 'NASA'],
     upcoming: true,
     success: true,
     flightNumber: newFlightNumber,
     ...launch,
   };
 
-  await saveLaunch(newLaunch);
+  const savedLaunch = await saveLaunch(newLaunch);
+  return savedLaunch;
 }
 
-function abortLaunchById(launchId) {
-  const aborted = launches.get(launchId);
-  aborted.upcoming = false;
-  aborted.success = false;
-  return aborted;
+async function abortLaunchById(launchId) {
+  return await launchesModel.updateOne(
+    {
+      flightNumber: launchId,
+    },
+    {
+      upcoming: false,
+      success: false,
+    }
+  );
+
+  // const aborted = launches.get(launchId);
+  // aborted.upcoming = false;
+  // aborted.success = false;
+  // return aborted;
 }
 
 module.exports = {
