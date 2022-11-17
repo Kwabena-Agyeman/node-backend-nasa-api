@@ -74,6 +74,12 @@ const Launch = (props) => {
         </Clickable>
         {props.isPendingLaunch && <Loading animate small />}
       </form>
+      {props?.errors?.length > 0 &&
+        props.errors.map((error) => (
+          <div style={{ backgroundColor: 'red' }}>
+            <p style={{ color: 'white', paddingLeft: '10px' }}>{error.msg}</p>
+          </div>
+        ))}
     </Appear>
   );
 };

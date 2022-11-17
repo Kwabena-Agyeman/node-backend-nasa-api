@@ -42,11 +42,8 @@ const AppLayout = (props) => {
   const onAbortSound = () => sounds.abort && sounds.abort.play();
   const onFailureSound = () => sounds.warning && sounds.warning.play();
 
-  const { launches, isPendingLaunch, submitLaunch, abortLaunch } = useLaunches(
-    onSuccessSound,
-    onAbortSound,
-    onFailureSound
-  );
+  const { launches, isPendingLaunch, errors, submitLaunch, abortLaunch } =
+    useLaunches(onSuccessSound, onAbortSound, onFailureSound);
 
   const planets = usePlanets();
 
@@ -67,6 +64,7 @@ const AppLayout = (props) => {
                   <Launch
                     entered={anim.entered}
                     planets={planets}
+                    errors={errors}
                     submitLaunch={submitLaunch}
                     isPendingLaunch={isPendingLaunch}
                   />
@@ -75,6 +73,7 @@ const AppLayout = (props) => {
                   <Launch
                     entered={anim.entered}
                     planets={planets}
+                    errors={errors}
                     submitLaunch={submitLaunch}
                     isPendingLaunch={isPendingLaunch}
                   />

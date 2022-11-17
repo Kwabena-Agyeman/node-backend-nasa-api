@@ -4,6 +4,7 @@ import { httpGetLaunches, httpSubmitLaunch, httpAbortLaunch } from './requests';
 
 function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
   const [launches, saveLaunches] = useState([]);
+  const [errors, setErrors] = useState([]);
   const [isPendingLaunch, setPendingLaunch] = useState(false);
 
   const getLaunches = useCallback(async () => {
@@ -35,13 +36,15 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
       const success = response.ok;
       if (success) {
         getLaunches();
-        setTimeout(() => {
-          setPendingLaunch(false);
-          onSuccessSound();
-        }, 800);
+        onSuccessSound();
+        setErrors([]);
       } else {
         onFailureSound();
+        setErrors(response.error?.errors);
       }
+      setTimeout(() => {
+        setPendingLaunch(false);
+      }, 800);
     },
     [getLaunches, onSuccessSound, onFailureSound]
   );
@@ -65,6 +68,7 @@ function useLaunches(onSuccessSound, onAbortSound, onFailureSound) {
   return {
     launches,
     isPendingLaunch,
+    errors,
     submitLaunch,
     abortLaunch,
   };

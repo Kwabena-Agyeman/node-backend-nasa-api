@@ -26,7 +26,10 @@ async function httpSubmitLaunch(launch) {
         'Content-Type': 'application/json',
       },
     });
-
+    if (!response.ok) {
+      const data = await response.json();
+      return { ok: false, error: data };
+    }
     return response;
   } catch (error) {
     return { ok: false };
