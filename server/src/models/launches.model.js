@@ -1,7 +1,11 @@
+const axios = require('axios');
+
 const launchesModel = require('./launches.mongo');
 const planetsModel = require('./planets.mongo');
 
 const DEFAULT_FLIGHT_NUMBER = 100;
+
+const SPACEX_API_URL = 'https://api.spacexdata.com/v4/launches/query';
 
 const launch = {
   flightNumber: 100,
@@ -15,6 +19,32 @@ const launch = {
 };
 
 saveLaunch(launch);
+
+async function loadSpaceXLaunchesData() {
+  console.log('Downloading spaceX launch data...');
+
+  // This Post request returns launch data from the spaceX REST Api
+  // The options object allows us to populate our launches data with data from other collections in the spaceX Mongo Database. i.e => populate the luabches data with data from the rockets and payloads collections
+  const response = await axios.post(SPACEX_API_URL, {
+    query: {},
+    options: {
+      populate: [
+        {
+          path: 'rocket',
+          select: {
+            name: 1,
+          },
+        },
+        {
+          path: 'payloads',
+          select: {
+            customers: 1,
+          },
+        },
+      ],
+    },
+  });
+}
 
 async function existsLaunchesWithId(launchId) {
   return await launchesModel.findOne({ flightNumber: launchId });
@@ -92,4 +122,5 @@ module.exports = {
   scheduleNewLaunch,
   existsLaunchesWithId,
   abortLaunchById,
+  loadSpaceXLaunchesData,
 };
