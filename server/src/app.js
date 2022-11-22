@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const morgan = require('morgan');
+const api = require('./routes/api');
 
 // Routes
 const planetsRouter = require('./routes/planets/planets.router');
@@ -31,8 +32,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', '..', 'client', 'build')));
 
 // Router
-app.use('/planets', planetsRouter);
-app.use('/launches', launchesRouter);
+app.use('/v1', api);
 
 // Serving our front end on the / path
 app.get('/*', (req, res) => {
