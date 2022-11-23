@@ -102,7 +102,11 @@ async function getLatestFlightNumber() {
 }
 
 async function getAllLaunches(skip, limit) {
-  return launchesModel.find({}, { _id: 0, __v: 0 }).skip(skip).limit(limit);
+  return launchesModel
+    .find({}, { _id: 0, __v: 0 })
+    .sort({ flightNumber: 1 })
+    .skip(skip)
+    .limit(limit);
 }
 
 async function saveLaunch(launch) {
