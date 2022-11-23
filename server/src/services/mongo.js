@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const MONGO_URL =
-  'mongodb+srv://nasa-api:m0v6mrsQus041u3r@cluster0.jvsor.mongodb.net/NASA-PROJECT?retryWrites=true&w=majority';
+const MONGO_URL = process.env.MONGO_URL;
 
 const MongoConnect = async () => {
   try {
